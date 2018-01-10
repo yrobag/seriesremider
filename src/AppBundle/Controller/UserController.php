@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\User\UserCreator;
+use AppBundle\Entity\User\UserService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -28,7 +28,7 @@ class UserController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $data = $request->request->get('form');
-            $userCreator = new UserCreator();
+            $userCreator = new UserService($this->getDoctrine()->getManager());
             $userCreator->createUser($data);
             return $this->redirectToRoute('homepage');
         }
