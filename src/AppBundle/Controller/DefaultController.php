@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class DefaultController extends Controller
@@ -16,10 +17,22 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
+        $loginForm = $this->_createLoginForm();
+
+
         return $this->render('seriesreminder/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
+            'form' => $loginForm->createView(),
         ]);
     }
 
+
+    protected function _createLoginForm()
+    {
+        return $this->createFormBuilder()
+            ->add('email', TextType::class)
+            ->add('password', PasswordType::class)
+            ->add('confirm', SubmitType::class, ['label' => 'Login'])
+            ->setAction('/login')
+            ->getForm();
+    }
 }

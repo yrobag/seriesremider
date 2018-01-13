@@ -3,15 +3,26 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\Email;
+
 
 /**
  * User
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @UniqueEntity(
+ * fields={"email"},
+ * message="It appears you have already registered with this email."
+ *)
  */
-class User
+class User implements UserInterface
 {
+    const USER_ROLE = 'USER_ROLE';
+
     /**
      * @var int
      *
@@ -30,15 +41,25 @@ class User
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=127, unique=true)
+     * @Email(
+     * message="Lol it isn't email"
+     *)
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="hashed_password", type="string", length=255, nullable=true)
+     * @ORM\Column(name="password", type="string", length=255, nullable=true)
      */
-    private $hashedPassword;
+    private $password;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="roles", type="string", length=255, nullable=true)
+     */
+    private $roles;
 
 
 
@@ -79,26 +100,104 @@ class User
     /**
      * Set hashedPassword
      *
-     * @param string $hashedPassword
+     * @param string $password
      *
      * @return User
      */
-    public function setHashedPassword($hashedPassword)
+    public function setPassword($password)
     {
-        $this->hashedPassword = $hashedPassword;
+        $this->password = $password;
 
         return $this;
     }
 
     /**
-     * Get hashedPassword
+     * Get password
      *
      * @return string
      */
-    public function getHashedPassword()
+    public function getPassword()
     {
-        return $this->hashedPassword;
+        return $this->password;
     }
 
+    /**
+     * Returns the roles granted to the user.
+     *
+     * <code>
+     * public function getRoles()
+     * {
+     *     return array('ROLE_USER');
+     * }
+     * </code>
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return (Role|string)[] The user roles
+     */
+    public function getRoles()
+    {
+        return unserialize($this->roles);
+    }
+
+    public function setRoles($roles)
+    {
+        $this->roles = serialize($roles);
+
+        return $this;
+    }
+
+
+    public function addUserRole()
+    {
+        $roles = $this->getRoles();
+        if(is_array($roles)){
+            $roles[] = self::USER_ROLE;
+        }else{
+            $roles = [self::USER_ROLE];
+        }
+
+        $this->setRoles($roles);
+
+        return $this;
+    }
+
+
+
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        return $this->getEmail();
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
 }
 

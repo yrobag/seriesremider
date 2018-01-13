@@ -33,3 +33,6 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+    seriesreminder.user.userservice:
+        class: AppBundle\Entity\User\UserService
+        arguments: ['@doctrine.orm.entity_manager']
