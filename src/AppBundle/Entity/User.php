@@ -21,7 +21,8 @@ use Symfony\Component\Validator\Constraints\Email;
  */
 class User implements UserInterface
 {
-    const USER_ROLE = 'USER_ROLE';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_USER = 'ROLE_USER';
 
     /**
      * @var int
@@ -140,6 +141,7 @@ class User implements UserInterface
     public function getRoles()
     {
         return unserialize($this->roles);
+
     }
 
     public function setRoles($roles)
@@ -150,13 +152,13 @@ class User implements UserInterface
     }
 
 
-    public function addUserRole()
+    public function addRole($role)
     {
         $roles = $this->getRoles();
         if(is_array($roles)){
-            $roles[] = self::USER_ROLE;
+            $roles[] = $role;
         }else{
-            $roles = [self::USER_ROLE];
+            $roles = [$role];
         }
 
         $this->setRoles($roles);

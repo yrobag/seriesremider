@@ -17,22 +17,8 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $loginForm = $this->_createLoginForm();
 
-
-        return $this->render('seriesreminder/index.html.twig', [
-            'form' => $loginForm->createView(),
-        ]);
+        return $this->render('seriesreminder/index.html.twig');
     }
 
-
-    protected function _createLoginForm()
-    {
-        return $this->createFormBuilder()
-            ->add('email', TextType::class)
-            ->add('password', PasswordType::class)
-            ->add('confirm', SubmitType::class, ['label' => 'Login'])
-            ->setAction('/login')
-            ->getForm();
-    }
 }

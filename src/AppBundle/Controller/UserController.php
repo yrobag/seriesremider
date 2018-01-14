@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 //use AppBundle\Entity\User\UserService;
+use AppBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,10 +31,10 @@ class UserController extends Controller
             return $this->redirectToRoute('homepage');
         }
 
-        $form = $this->_createRegisterForm();
+        $form = $this->createForm(UserType::class);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $data = $request->request->get('form');
+            $data = $request->request->get('user');
             try{
                 $userService->createUser($data);
             }catch (Exception $e){

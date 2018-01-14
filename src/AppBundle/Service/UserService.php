@@ -32,7 +32,7 @@ class UserService implements ContainerAwareInterface
         $user = new User();
         $hash = $this->_hashPassword($data['password']['first'], $user);
         $user->setEmail($data['email'])->setPassword($hash);
-        $user->addUserRole();
+        $user->addRole(User::ROLE_USER);
 
         $this->_em->persist($user);
         $this->_em->flush();
