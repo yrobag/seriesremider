@@ -5,6 +5,7 @@
         <title>{% block title %}Series Reminder{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% block head_js %}{% endblock %}
     </head>
     <body>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
