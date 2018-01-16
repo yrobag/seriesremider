@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div style="float: left">
+        {% if (series.image and series.image.medium ) %}
+            <img src="{{ series.image.medium }}" alt="{{ series.name }}">
+        {% else %}
+            <img src="http://shashgrewal.com/wp-content/uploads/2015/05/default-placeholder-300x300.png" alt="{{ series.name }}">
+        {% endif %}
+    </div>
+    <div style="float: left; max-width: 300px">
+        <h4>{{ series.name }}</h4>
+        <p>Genres:
+        {% if series.genres %}
+            <ul>
+                {% for genre in series.genres %}
+                <li>{{ genre }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            unknown
+        {% endif %}
+        </p>
+        <p>Premiered: {{ series.premiered }}</p>
+        <p>Runtime: {{ series.runtime }}minutes</p>
+        <p>Status: {{ series.status }}</p>
+        <div>Description:{{ series.summary|raw }}</div>
+    </div>
+    <div style="clear: both"></div>
+{% endblock %}
+
+
+

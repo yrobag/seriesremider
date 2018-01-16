@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @Route("admin")
  */
-
 class AdminController extends Controller
 {
 

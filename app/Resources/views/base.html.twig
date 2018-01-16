@@ -11,7 +11,10 @@
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <a href="{{ logout_path() }}">Logout</a>
         {% endif  %}
-        {% block body %}{% endblock %}
+        <div class="main_container">
+            {% block body %}{% endblock %}
+        </div>
         {% block javascripts %}{% endblock %}
+        <script type="text/javascript" src="dist/bundle.js" />
     </body>
 </html>
