@@ -23,3 +23,5 @@ document.getElementById('search_input').addEventListener('input', e => {
        resultContainer.innerHTML = '';
    }
 });
+
+

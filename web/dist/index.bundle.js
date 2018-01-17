@@ -91,17 +91,5 @@ document.getElementById('search_input').addEventListener('input', e => {
     }
 });
 
-const radios = document.getElementsByClassName('notify-options');
-let prev = null;
-for (let i = 0; i < radios.length; i++) {
-    radios[i].onclick = function () {
-        prev ? console.log(prev.value) : null;
-        if (this !== prev) {
-            prev = this;
-        }
-        console.log(this.value);
-    };
-}
-
 /***/ })
 /******/ ]);

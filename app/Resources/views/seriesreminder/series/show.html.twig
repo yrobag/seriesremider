@@ -27,6 +27,15 @@
         <div>Description:{{ series.summary|raw }}</div>
     </div>
     <div style="clear: both"></div>
+    <div>
+        {% for code, label in options%}
+        <input type="radio" name="notify" data-id="{{ series.id }}" class="notify-options" value="{{ code }}"><span>{{ label }}</span><br>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="/dist/show.bundle.js" />
 {% endblock %}
 
 

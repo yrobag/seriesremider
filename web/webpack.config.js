@@ -3,11 +3,15 @@ const webpack = require('webpack');
 
 const config = {
 
-    entry: './src/js/app.js',
+
+    entry: {
+        index: "./src/js/index.js",
+        show: "./src/js/show.js"
+    },
 
     output: {
         path: __dirname + '/dist',
-        filename: 'bundle.js'
+        filename: "[name].bundle.js",
     },
 
     module:{
