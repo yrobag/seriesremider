@@ -29,9 +29,11 @@
     <div style="clear: both"></div>
     <div>
         {% for code, label in options%}
-        <input type="radio" name="notify" data-id="{{ series.id }}" class="notify-options" value="{{ code }}"><span>{{ label }}</span><br>
+            <input type="radio" name="notify" data-id="{{ series.id }}" class="notify-options" value="{{ code }}"
+            {% if notification_type == code %}checked{% endif %}><span>{{ label }}</span><br>
         {% endfor %}
     </div>
+    <div id="message-container"></div>
 {% endblock %}
 
 {% block javascripts %}

@@ -7,6 +7,7 @@ use AppBundle\Service\ReminderService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -32,14 +33,18 @@ class SeriesController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $series = json_decode(curl_exec($ch));
         $options = $reminderService->getOptionsCodes();
+        $notificationType = $reminderService->getReminderOptionForUser($this->getUser(), $id);
+
 
         if($series->id){
             return $this->render('seriesreminder/series/show.html.twig', [
-                'series' => $series,
-                'options' =>$options,
+                'series'            =>  $series,
+                'options'           =>  $options,
+                'notification_type' =>  $notificationType,
             ]);
         }
-        var_dump($series);die;
+
+        return $this->forward('homepage');
 
     }
 
@@ -51,7 +56,29 @@ class SeriesController extends Controller
      */
     public function saveAction(Request $request, ReminderService $reminderService)
     {
-        var_dump($_POST);die;
+        if($this->getUser()){
+            $data = [
+                'userId'    => $this->getUser()->getId(),
+                'seriesId'  => (int) $request->get('id'),
+                'code'      => (int) $request->get('code'),
+            ];
+            try{
+                $reminderService->createReminder($data);
+            }catch (Exception $e){
+                return $this->json([
+                    'status'    => 400,
+                    'message'   => 'Something went wrong while saving to database!',
+                ]);
+            }
+
+            return $this->json([
+                'status'    => 200,
+                'message'   => 'Your reminders list was updated successfully!',
+            ]);
+        }
+        return $this->json([
+            'status'    => 300,
+        ]);
     }
 
 
