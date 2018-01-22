@@ -82,5 +82,39 @@ class SeriesController extends Controller
     }
 
 
+    /**
+     * @Route("/remove")
+     * @param ReminderService $reminderService
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function removeAction(Request $request, ReminderService $reminderService)
+    {
+        if($this->getUser()){
+            $user = $this->getUser();
+            $seriesId =(int) $request->get('id');
+            try{
+                $reminderService->removeReminder($user, $seriesId);
+            }catch (Exception $e){
+                return $this->json([
+                    'status'    => 400,
+                    'message'   => 'Something went wrong while saving to database!',
+                ]);
+            }
+            return $this->json([
+                'status'    => 200,
+                'message'   => 'Your reminders list was updated successfully!',
+            ]);
+        }
+    }
+
+    public function userSeries(ReminderService $reminderService)
+    {
+        $user=$this->getUser();
+        $mySeries = $reminderService->getUserSeries($user);
+        return $this->render('seriesreminder/series/myseries.html.twig',[
+            'series' => $mySeries,
+        ]);
+    }
+
 
 }

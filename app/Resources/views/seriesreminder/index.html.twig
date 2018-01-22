@@ -5,7 +5,11 @@
 
     <div class="search-container">
         <input id="search_input"/>
-        <div id="search_result"></div>
+        <div id="search_result">
+        </div>
+    </div>
+    <div class="my-series">
+        {{ render(controller('AppBundle\\Controller\\SeriesController::userSeries')) }}
     </div>
 {% endblock %}
 

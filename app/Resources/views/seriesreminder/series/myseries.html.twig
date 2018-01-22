@@ -1,0 +1,12 @@
+{% for serie in series %}
+    <div class="series-row" id="row-{{ serie.seriesId }}">
+        <a href="/series/{{ serie.seriesId }}">
+            <span data-id="{{ serie.seriesId }}" class="series-name">Loading...</span>
+        </a>
+        <button data-id="{{ serie.seriesId }}" class="series-remove">remove</button>
+    </div>
+{% endfor %}
+
+
+
+

@@ -1,3 +1,4 @@
+$ = require('jquery');
 let resultContainer = document.getElementById('search_result');
 const placeholder = 'http://shashgrewal.com/wp-content/uploads/2015/05/default-placeholder-300x300.png';
 
@@ -23,5 +24,29 @@ document.getElementById('search_input').addEventListener('input', e => {
        resultContainer.innerHTML = '';
    }
 });
+
+let seriesNameSpans = document.getElementsByClassName('series-name');
+[].forEach.call(seriesNameSpans, span => {
+    let id = span.getAttribute('data-id');
+    fetch(`http://api.tvmaze.com/shows/${id}`)
+        .then(res=>res.json())
+        .then(data => {
+            span.innerHTML = data.name;
+        });
+});
+
+let seriesRemoveButtons = document.getElementsByClassName('series-remove');
+[].forEach.call(seriesRemoveButtons, button => {
+    let id = button.getAttribute('data-id');
+    button.addEventListener('click', e => {
+        $.post('/series/remove', {id: id}, response => {
+            if(response.status === 200) {
+                document.getElementById(`row-${id}`).outerHTML = '';
+            }
+        });
+    });
+});
+
+
 
 
