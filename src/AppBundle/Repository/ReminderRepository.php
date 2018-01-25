@@ -10,4 +10,14 @@ namespace AppBundle\Repository;
  */
 class ReminderRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getAllSeriesIds()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.seriesId')
+            ->distinct(true)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
 }
