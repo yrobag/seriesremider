@@ -9,9 +9,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 
-class UpdateNextEpisodesDataCommand extends Command
+class ClearReleasedEpisodesCommand extends Command
 {
-
     public $em;
 
     public $nextEpisodeService;
@@ -31,34 +30,18 @@ class UpdateNextEpisodesDataCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:next_episodes')
+            ->setName('app:clear_episodes')
             ->setDescription('Test Command')
             ->setHelp('This command search data about next episodes');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $allSeriesIds =$this->nextEpisodeService->getSeriesIds();
-        foreach ($allSeriesIds as $id) {
-            $id = $id['seriesId'];
-
-
-            if ($this->nextEpisodeService->checkIfAlreadyCreated($id)){
-                continue;
-            }
-
-            $data = $this->nextEpisodeService->getNextEpisodeData($id);
-
-            if($this->nextEpisodeService->checkIfContainNextEpisodeData($data)){
-                $episode = $data->_embedded->nextepisode;
-                $this->nextEpisodeService->createNewEpisode($episode, $data);
-            }
-
+        $releasedEpisodes = $this->nextEpisodeService->getEpisodesToRemove();
+        foreach ($releasedEpisodes as $episode){
+            $this->nextEpisodeService->removeEpisode($episode);
         }
         $output->writeln('Success');
-
-
     }
-
 
 }

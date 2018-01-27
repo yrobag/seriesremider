@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class NextEpisodeRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getReleasedEpisodes()
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.date < :date')
+            ->setParameter('date', date('Y-m-d', (time()-(24*3600))))
+            ->getQuery()
+            ->getResult();
+    }
 }
